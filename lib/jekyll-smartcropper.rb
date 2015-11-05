@@ -6,7 +6,7 @@ include Magick
 include FileUtils
 
 module Jekyll
-  module SmartCropper
+  module SmartCropperGen
     # This part is copied from https://github.com/kinnetica/jekyll-plugins
     # Recover from strange exception when starting server without --auto
     class GeneratedImageFile < StaticFile

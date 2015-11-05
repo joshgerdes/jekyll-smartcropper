@@ -1,5 +1,5 @@
 module Jekyll
-  module SmartCropper
-    VERSION = "0.0.1"
+  module SmartCropperGen
+    VERSION = "0.0.2"
   end
 end

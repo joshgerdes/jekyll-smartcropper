@@ -4,7 +4,7 @@ require "jekyll-smartcropper/version"
 
 Gem::Specification.new do |s|
   s.name        = "jekyll-smartcropper"
-  s.version     = Jekyll::SmartCropper::VERSION
+  s.version     = Jekyll::SmartCropperGen::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Josh Gerdes"]
   s.email       = ["josh@joshgerdes.com"]
