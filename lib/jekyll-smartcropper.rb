@@ -36,35 +36,37 @@ module Jekyll
 
           Dir.glob(File.join(site.source, @src_dir, "*.{png,jpg,jpeg,gif}")) do |file|
             dest_file = file.sub(@src_dir, @dest_dir)
+            
+            if File.file?(dest_file) == false or File.mtime(file) > File.mtime(dest_file)
+              FileUtils.mkdir_p(File.dirname(dest_file))
 
-            FileUtils.mkdir_p(File.dirname(dest_file))
+              puts case @process
+                when "crop_and_scale"
+                  SmartCropper.from_file(file).smart_crop_and_scale(@width, @height).write(dest_file)
+                when "crop"
+                  SmartCropper.from_file(file).smart_crop(@width, @height).write(dest_file)
+                when "square"
+                  SmartCropper.from_file(file).smart_square.write(dest_file)
+                when "resize"
+                  img = Magick::Image.read(file).first
+                  new_img = img.resize(@width, @height)
+                  new_img.write dest_file
+                when "resize_to_fill"
+                  img = Magick::Image.read(file).first
+                  new_img = img.resize_to_fill(@width, @height)
+                  new_img.write dest_file
+                when "resize_to_fit"
+                  img = Magick::Image.read(file).first
+                  new_img = img.resize_to_fit(@width, @height)
+                  new_img.write dest_file
+                else               
+                  img = Magick::Image.read(file).first
+                  new_img = img.resize(@width, @height)
+                  new_img.write dest_file
+              end
 
-            puts case @process
-              when "crop_and_scale"
-                SmartCropper.from_file(file).smart_crop_and_scale(@width, @height).write(dest_file)
-              when "crop"
-                SmartCropper.from_file(file).smart_crop(@width, @height).write(dest_file)
-              when "square"
-                SmartCropper.from_file(file).smart_square.write(dest_file)
-              when "resize"
-                img = Magick::Image.read(file).first
-                new_img = img.resize(@width, @height)
-                new_img.write dest_file
-              when "resize_to_fill"
-                img = Magick::Image.read(file).first
-                new_img = img.resize_to_fill(@width, @height)
-                new_img.write dest_file
-              when "resize_to_fit"
-                img = Magick::Image.read(file).first
-                new_img = img.resize_to_fit(@width, @height)
-                new_img.write dest_file
-              else               
-                img = Magick::Image.read(file).first
-                new_img = img.resize(@width, @height)
-                new_img.write dest_file
+              site.static_files << GeneratedImageFile.new(site, site.source, @dest_dir, File.basename(dest_file))
             end
-
-            site.static_files << GeneratedImageFile.new(site, site.source, @dest_dir, File.basename(dest_file))
           end
         end
       end

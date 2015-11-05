@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jekyll-smartcropper (0.0.2)
+    jekyll-smartcropper (0.0.3)
       jekyll (>= 3.0.0)
       rmagick (> 2.11.0)
       smartcropper (>= 0.7.1)
